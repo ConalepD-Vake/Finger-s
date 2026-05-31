@@ -1,14 +1,15 @@
 package SubSystems.DriveTrain;
 
+import static java.lang.Thread.sleep;
+
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
-@SuppressWarnings("ALL")
 public class shooter {
 
     private final DcMotorEx shooterMotor;
-    private String estado = "Detenido";
+    private String estado = "Stopped";
 
     public shooter(HardwareMap hardwareMap) {
 
@@ -22,30 +23,24 @@ public class shooter {
         shooterMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void disparar() {
+    public void shoot() {
         shooterMotor.setPower(1.0);
-        estado = "Disparando";
+        estado = "shooting";
 
 
 
     }
-
-    public void disparar(double potencia) {
-        shooterMotor.setPower(potencia);
-        estado = "Disparando";
-    }
-
-    public void detener() {
+    public void stopShooter() {
         shooterMotor.setPower(0.0);
-        estado = "Detenido";
+        estado = "stopped";
     }
 
-    public void antiAtasco() {
+    public void antijam() {
         shooterMotor.setPower(-1);
-        estado = "Desatascando";
+        estado = "unclogging";
 
         try {
-            Thread.sleep(500); // 500 ms en reversa
+            sleep(500);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

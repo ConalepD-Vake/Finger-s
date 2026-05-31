@@ -4,12 +4,9 @@
     import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
     import com.qualcomm.robotcore.hardware.DcMotor;
     import com.qualcomm.robotcore.hardware.DcMotorEx;
+
     import SubSystems.DriveTrain.intake;
     import SubSystems.DriveTrain.shooter;
-    import org.firstinspires.ftc.vision.VisionPortal;
-    import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-
-    @SuppressWarnings("ALL")
     @Autonomous(
             name = "Finger's Auto",
             group = "Auto"
@@ -19,8 +16,6 @@
 
         private DcMotorEx chassis1;
         private DcMotorEx chassis2;
-        private shooter Shooter;
-        private intake Recolector;
 
         @Override
         public void runOpMode() {
@@ -29,28 +24,18 @@
             chassis2 = hardwareMap.get(DcMotorEx.class, "chassis2");
 
 
-            WebcamName webcam;
-            VisionPortal visionPortal;
-
-            webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
-
-            visionPortal = VisionPortal.easyCreateWithDefaults(
-                    webcam
-            );
-
-
             chassis1.setDirection(DcMotor.Direction.FORWARD);
             chassis2.setDirection(DcMotor.Direction.REVERSE);
 
             chassis1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             chassis2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-            Recolector = new intake(hardwareMap);
+            intake Intaker = new intake(hardwareMap);
 
-            Shooter = new shooter(hardwareMap);
+            shooter shooter = new shooter(hardwareMap);
 
-            Recolector.init();
-            Shooter.init();
+            Intaker.init();
+            shooter.init();
 
             waitForStart();
 
@@ -64,20 +49,19 @@
 
 
 
-                Shooter.disparar();
+                shooter.shoot();
                 sleep(15000);
 
-                Recolector.activarRecolector();
+                Intaker.activateIntaker();
 
                 sleep(5000);
 
 
 
-                Recolector.detenerRecolector();
-                Shooter.detener();
+                Intaker.stopIntake();
+                shooter.stopShooter();
 
                 sleep(3000);
-            //finish shoot
 
                 stopMotors();
             }
